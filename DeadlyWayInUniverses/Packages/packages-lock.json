@@ -90,6 +90,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.ide.vscode": {
+      "version": "1.2.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.inputsystem": {
       "version": "1.4.4",
       "depth": 0,
@@ -156,7 +163,7 @@
     },
     "com.unity.searcher": {
       "version": "4.9.1",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -181,7 +188,7 @@
     },
     "com.unity.shadergraph": {
       "version": "12.1.8",
-      "depth": 1,
+      "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.render-pipelines.core": "12.1.8",
@@ -189,8 +196,8 @@
       }
     },
     "com.unity.terrain-tools": {
-      "version": "4.0.3",
-      "depth": 1,
+      "version": "4.0.5",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.terrain": "1.0.0",
