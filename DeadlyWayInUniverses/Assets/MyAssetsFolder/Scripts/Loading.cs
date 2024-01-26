@@ -7,7 +7,7 @@ public class Loading : MonoBehaviour
 {
     [SerializeField] private GameObject LoadingScrren;
     [SerializeField] private Slider loaddingBarFill;
-    [SerializeField] private GameObject uıCamera;
+    [SerializeField] private GameObject uICamera;
 
     public void LoadScene(int sceneId)
     {
@@ -17,7 +17,8 @@ public class Loading : MonoBehaviour
     {
         LoadingScrren.gameObject.SetActive(true);
         loaddingBarFill.gameObject.SetActive(true);
-        uıCamera.SetActive(true);
+        uICamera.SetActive(true);
+     
     }
 
     IEnumerator LoadSceneAsync(int sceneId)
