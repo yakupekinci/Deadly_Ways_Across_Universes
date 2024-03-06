@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/* using UnityEngine;
 
 public class FreeCamera : MonoBehaviour {
 #if UNITY_EDITOR
@@ -93,3 +93,4 @@ public class FreeCamera : MonoBehaviour {
 		transform.position += transform.forward * forward + transform.right * right + Vector3.up * up;
 	}
 }
+ */
