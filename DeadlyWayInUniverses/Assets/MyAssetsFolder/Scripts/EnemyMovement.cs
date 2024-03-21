@@ -25,6 +25,8 @@ public class EnemyMovement : MonoBehaviour
     {
         anim = transform.GetChild(0).GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        if (this.gameObject.tag == "Z")
+            return;
         player = FindObjectOfType<PlayerController>().gameObject;
     }
 
