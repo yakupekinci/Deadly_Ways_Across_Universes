@@ -8,6 +8,9 @@ TagManager:
   - Portal
   - HingeDoor
   - Z
+  - Parchement
+  - Parchemnet
+  - Parchment
   layers:
   - Default
   - TransparentFX
