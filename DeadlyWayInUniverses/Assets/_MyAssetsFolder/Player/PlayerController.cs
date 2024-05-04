@@ -31,6 +31,7 @@ namespace UnityTutorial.PlayerControl
         private int _zVelHash;
         private int _crouchHash;
         private float _xRotation;
+        public bool CanMove;
 
         private const float _walkSpeed = 2f;
         private const float _runSpeed = 6f;
@@ -40,6 +41,7 @@ namespace UnityTutorial.PlayerControl
 
         private void Start()
         {
+            CanMove = true;
             _hasAnimator = TryGetComponent<Animator>(out _animator);
             _playerRigidbody = GetComponent<Rigidbody>();
             _inputManager = GetComponent<InputManager>();
@@ -56,13 +58,19 @@ namespace UnityTutorial.PlayerControl
 
         private void FixedUpdate()
         {
+            if (!CanMove)
+                return;
+
             SampleGround();
             Move();
-           //HandleJump();
+            //HandleJump();
             HandleCrouch();
         }
         private void LateUpdate()
         {
+
+            if (!CanMove)
+                return;
             CamMovements();
         }
 
@@ -158,6 +166,21 @@ namespace UnityTutorial.PlayerControl
         {
             _animator.SetBool(_fallingHash, !_grounded);
             _animator.SetBool(_groundHash, _grounded);
+        }
+        public void PauseAnimations()
+        {
+            if (_hasAnimator)
+            {
+                _animator.speed = 0f; // Tüm animasyonları duraklat
+            }
+        }
+
+        public void ResumeAnimations()
+        {
+            if (_hasAnimator)
+            {
+                _animator.speed = 1f; // Tüm animasyonları devam ettir
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ public class PlayersMovement : MonoBehaviour
 {
     public float movementSpeed = 5.0f;
     public float mouseSensitivity = 2.0f;
+    
 
     public Camera freeLookCam;
     private float verticalRotation = 0f;
