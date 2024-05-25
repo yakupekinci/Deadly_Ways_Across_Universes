@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 455880}
   - component: {fileID: 3372772}
   - component: {fileID: 2369992}
+  - component: {fileID: 6607407391015505031}
   m_Layer: 0
   m_Name: Z_02_LOD02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!4 &455880
 Transform:
@@ -83,6 +84,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &6607407391015505031
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107606}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.039, y: 1.238, z: 0.86300004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.135, y: -1.2390001, z: 1.161}
+  m_TimeToStationary: 0.5
 --- !u!1 &126854
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,12 +188,13 @@ GameObject:
   - component: {fileID: 3334844}
   - component: {fileID: 2349780}
   - component: {fileID: 6419228}
+  - component: {fileID: 7050565034175025953}
   m_Layer: 0
   m_Name: Z_02Detail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!4 &441282
 Transform:
@@ -258,6 +276,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: 4ecb02d68d9c6694db60b6afc7b243b9, type: 3}
+--- !u!208 &7050565034175025953
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140832}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.039, y: 1.238, z: 0.86300004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.135, y: -1.2390001, z: 1.161}
+  m_TimeToStationary: 0.5
 --- !u!1 &157536
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,12 +303,13 @@ GameObject:
   - component: {fileID: 442880}
   - component: {fileID: 3328598}
   - component: {fileID: 2369250}
+  - component: {fileID: 2593834842352304281}
   m_Layer: 0
   m_Name: Z_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!4 &442880
 Transform:
@@ -342,3 +377,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &2593834842352304281
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157536}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.039, y: 1.238, z: 0.86300004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.135, y: -1.2390001, z: 1.161}
+  m_TimeToStationary: 0.5

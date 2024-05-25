@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 303926863195278110}
   - component: {fileID: 303926863191868232}
   - component: {fileID: 303926863193370620}
+  - component: {fileID: 1739901945845893871}
   m_Layer: 0
   m_Name: Z_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 18
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 58
   m_IsActive: 1
 --- !u!4 &303926863195278110
 Transform:
@@ -84,6 +85,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &1739901945845893871
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303926863195057790}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.13, y: 1.238, z: 0.86300004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.135, y: -1.2390001, z: 1.161}
+  m_TimeToStationary: 0.5
 --- !u!1 &303926863195074366
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,12 +113,13 @@ GameObject:
   - component: {fileID: 303926863191878562}
   - component: {fileID: 303926863192986570}
   - component: {fileID: 303926863188933122}
+  - component: {fileID: 9137226746921303764}
   m_Layer: 0
   m_Name: Z_02Detail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 18
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 58
   m_IsActive: 1
 --- !u!4 &303926863195304668
 Transform:
@@ -183,6 +201,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: 4ecb02d68d9c6694db60b6afc7b243b9, type: 3}
+--- !u!208 &9137226746921303764
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303926863195074366}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.13, y: 1.238, z: 0.86300004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.135, y: -1.2390001, z: 1.161}
+  m_TimeToStationary: 0.5
 --- !u!1 &303926863195219608
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +227,6 @@ GameObject:
   m_Component:
   - component: {fileID: 303926863195388174}
   - component: {fileID: 303926863209410918}
-  - component: {fileID: 303926863195195673}
   - component: {fileID: 5411364751721322205}
   m_Layer: 0
   m_Name: BIG_FENCES
@@ -247,22 +280,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 303926863193366742}
   m_Enabled: 1
---- !u!208 &303926863195195673
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303926863195219608}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!65 &5411364751721322205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -287,12 +304,13 @@ GameObject:
   - component: {fileID: 303926863195291094}
   - component: {fileID: 303926863191982074}
   - component: {fileID: 303926863193366742}
+  - component: {fileID: 8967327053836100810}
   m_Layer: 0
   m_Name: Z_02_LOD02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 18
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 58
   m_IsActive: 1
 --- !u!4 &303926863195291094
 Transform:
@@ -359,3 +377,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &8967327053836100810
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303926863195237704}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.13, y: 1.238, z: 0.86300004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.135, y: -1.2390001, z: 1.161}
+  m_TimeToStationary: 0.5

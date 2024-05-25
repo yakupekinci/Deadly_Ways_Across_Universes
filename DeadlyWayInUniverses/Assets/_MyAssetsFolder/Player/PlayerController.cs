@@ -34,7 +34,7 @@ namespace UnityTutorial.PlayerControl
         public bool CanMove;
 
         private const float _walkSpeed = 2f;
-        private const float _runSpeed = 6f;
+        private const float _runSpeed = 3f;
         private Vector2 _currentVelocity;
 
 
