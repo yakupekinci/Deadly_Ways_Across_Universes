@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Teleport : Loading
 {
-
+    public int SceneNum;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             ActivePanel();
             other.gameObject.SetActive(false);
-            LoadScene(1);
+            LoadScene(SceneNum);
         }
     }
 
