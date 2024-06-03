@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main/Cave.unity
     guid: 03d8141b43877cf478ceb016d6737158
   - enabled: 1
-    path: Assets/Scenes/Main/Loading.unity
-    guid: f3629828e2937144d870b231ccc50b6c
+    path: Assets/Scenes/Main/Space.unity
+    guid: 256bf2e01584b6842bb3ab4119d42a83
   m_configObjects: {}
