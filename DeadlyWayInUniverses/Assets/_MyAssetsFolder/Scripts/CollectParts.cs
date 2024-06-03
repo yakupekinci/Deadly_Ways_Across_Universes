@@ -30,11 +30,11 @@ public class CollectParts : MonoBehaviour
         {
             if (isCollect)
             {
-                // PlayerController'da animasyonları başlat
+               
                 playerController.ResumeAnimations();
                 transform.gameObject.SetActive(false);
                 playerController.CanMove = true;
-                // Diğer kodlar...
+           
             }
         }
     }
