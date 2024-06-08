@@ -10,17 +10,20 @@ public class CollectParts : MonoBehaviour
     [SerializeField] private GameObject collectPos;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private AudioSource collectSound;
-    [SerializeField] private Animation anim;
+    [SerializeField] private GameObject ParchamentPanel;
     private float theDistance;
     private bool isCollect = false;
 
     private PlayerController playerController; // PlayerController referansı
+    private NpcController NPCController;
 
     private void Start()
     {
-        anim = GetComponent<Animation>();
+
+        NPCController = FindObjectOfType<NpcController>();
         playerController = FindObjectOfType<PlayerController>(); // PlayerController örneğini bul
     }
+
 
     private void Update()
     {
@@ -28,13 +31,14 @@ public class CollectParts : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isCollect)
+            if (isCollect && ParchamentPanel.gameObject.activeSelf)
             {
-               
-                playerController.ResumeAnimations();
-                transform.gameObject.SetActive(false);
+
+                /*  playerController.ResumeAnimations(); */
+
+                ParchamentPanel.SetActive(false);
                 playerController.CanMove = true;
-           
+
             }
         }
     }
@@ -50,13 +54,18 @@ public class CollectParts : MonoBehaviour
             {
                 if (gameObject.CompareTag("Parchment"))
                 {
+                    transform.gameObject.SetActive(false);
                     playerController.CanMove = false;
                     isCollect = true;
-                    playerController.PauseAnimations();
-                    transform.SetParent(collectPos.transform);
-                    transform.position = collectPos.transform.position;
-                    transform.localRotation = Quaternion.Euler(0f, -90f, 71f);
-                    mainCamera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                    ParchamentPanel.SetActive(true);
+                    NPCController.CollectScroll();
+
+                    /*   playerController.PauseAnimations();
+                      transform.SetParent(collectPos.transform);
+                      transform.position = collectPos.transform.position;
+                      transform.localRotation = Quaternion.Euler(0f, -90f, 71f);
+                      mainCamera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); */
+
 
                 }
             }

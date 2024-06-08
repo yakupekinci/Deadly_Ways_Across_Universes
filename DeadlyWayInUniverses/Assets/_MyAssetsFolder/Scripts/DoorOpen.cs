@@ -38,7 +38,7 @@ public class DoorOpen : MonoBehaviour
                     else if (!isOpen)
                     {
                         anim.Play("GlassDoor");
-                        isOpen = true;
+                        isOpen = true; 
                     }
                 }
                 else 
