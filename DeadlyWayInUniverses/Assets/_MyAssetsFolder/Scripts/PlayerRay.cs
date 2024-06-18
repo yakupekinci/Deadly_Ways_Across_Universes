@@ -7,7 +7,6 @@ public class PlayerRay : MonoBehaviour
     public static float distanceFromTarget;
     public float toTarget;
 
-
     private void Update()
     {
         RaycastHit hit;
@@ -15,6 +14,10 @@ public class PlayerRay : MonoBehaviour
         {
             toTarget = hit.distance;
             distanceFromTarget = toTarget;
+        }
+        else
+        {
+            distanceFromTarget = float.MaxValue; // Eğer hiçbir şey vurulmazsa, mesafeyi çok büyük yapıyoruz.
         }
     }
 }

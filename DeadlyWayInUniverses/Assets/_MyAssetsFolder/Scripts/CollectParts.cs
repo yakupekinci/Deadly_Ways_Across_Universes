@@ -7,10 +7,10 @@ public class CollectParts : MonoBehaviour
 {
     [SerializeField] private GameObject actionKey;
     [SerializeField] private GameObject actionText;
-    [SerializeField] private GameObject collectPos;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private AudioSource collectSound;
-    [SerializeField] private GameObject ParchamentPanel;
+    public GameObject ParchamentPanel;
+     [SerializeField] private float  _collectDistance;
     private float theDistance;
     private bool isCollect = false;
 
@@ -19,11 +19,9 @@ public class CollectParts : MonoBehaviour
 
     private void Start()
     {
-
         NPCController = FindObjectOfType<NpcController>();
         playerController = FindObjectOfType<PlayerController>(); // PlayerController örneğini bul
     }
-
 
     private void Update()
     {
@@ -33,19 +31,16 @@ public class CollectParts : MonoBehaviour
         {
             if (isCollect && ParchamentPanel.gameObject.activeSelf)
             {
-
-                /*  playerController.ResumeAnimations(); */
-
                 ParchamentPanel.SetActive(false);
                 playerController.CanMove = true;
-
             }
         }
     }
 
     private void OnMouseOver()
     {
-        if (theDistance < 2)
+        // Mesafe kontrolünü buraya ekliyoruz.
+        if (Vector3.Distance(transform.position, Camera.main.transform.position) <= _collectDistance && !isCollect)
         {
             actionKey.SetActive(true);
             actionText.SetActive(true);
@@ -54,19 +49,14 @@ public class CollectParts : MonoBehaviour
             {
                 if (gameObject.CompareTag("Parchment"))
                 {
-                    transform.gameObject.SetActive(false);
                     playerController.CanMove = false;
                     isCollect = true;
                     ParchamentPanel.SetActive(true);
-                    NPCController.CollectScroll();
-
-                    /*   playerController.PauseAnimations();
-                      transform.SetParent(collectPos.transform);
-                      transform.position = collectPos.transform.position;
-                      transform.localRotation = Quaternion.Euler(0f, -90f, 71f);
-                      mainCamera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); */
-
-
+                    NPCController.CollectScroll(ParchamentPanel.gameObject);
+                    transform.GetChild(0).gameObject.SetActive(false);
+                    transform.GetChild(1).gameObject.SetActive(false);
+                    transform.GetChild(2).gameObject.SetActive(false);
+                    StartCoroutine(WaitForParchament());
                 }
             }
         }
@@ -81,5 +71,13 @@ public class CollectParts : MonoBehaviour
     {
         actionKey.SetActive(false);
         actionText.SetActive(false);
+    }
+
+    IEnumerator WaitForParchament()
+    {
+        yield return new WaitForSeconds(30);
+        transform.gameObject.SetActive(false);
+        ParchamentPanel.SetActive(false);
+        playerController.CanMove = true;
     }
 }

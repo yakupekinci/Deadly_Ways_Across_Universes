@@ -10,7 +10,6 @@ public class ZombieMovement : MonoBehaviour
     [SerializeField] private float attackDistance = 5f;
     [SerializeField] private float followDistance = 200f;
     [SerializeField] private float speedDistance = 20f;
-    [SerializeField] private float jumpHeightThreshold = 1.5f;
     [SerializeField] private float idleDuration = 2f; // Bekleme süresi
     [SerializeField] private float randomAreaRadius = 10f; // Rastgele alan yarıçapı
 
@@ -25,7 +24,7 @@ public class ZombieMovement : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        player = FindObjectOfType<PlayerRay>().gameObject;
+        player = FindObjectOfType<PlayerController>().gameObject;
     }
 
     private void Start()
@@ -51,13 +50,11 @@ public class ZombieMovement : MonoBehaviour
 
             if (distance > speedDistance)
             {
-               // anim.SetBool("isRunning", false);
                 anim.SetBool("isWalking", true);
                 navMeshAgent.speed = movementSpeed * 2f;
             }
             else if (distance < speedDistance)
             {
-              //  anim.SetBool("isRunning", false);
                 anim.SetBool("isWalking", true);
                 navMeshAgent.speed = movementSpeed;
             }
@@ -74,7 +71,6 @@ public class ZombieMovement : MonoBehaviour
                 navMeshAgent.isStopped = false;
             }
 
-            //CheckForJump();
         }
         else
         {
@@ -92,6 +88,16 @@ public class ZombieMovement : MonoBehaviour
                 }
             }
         }
+
+        // Check if the zombie is actually moving
+        if (navMeshAgent.velocity.sqrMagnitude > 0.1f)
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
     }
 
     private void SetRandomDestination()
@@ -104,23 +110,8 @@ public class ZombieMovement : MonoBehaviour
 
         if (hit.position != null)
         {
-            navMeshAgent.SetDestination(hit.position);
-            anim.SetBool("isWalking", true);
+            navMeshAgent.SetDestination(hit.position);  
             isIdle = true;
-        }
-    }
-
-    private void CheckForJump()
-    {
-        float heightDifference = Mathf.Abs(transform.position.y - player.transform.position.y);
-
-        if (heightDifference > jumpHeightThreshold)
-        {
-            anim.SetBool("isJumping", true);
-        }
-        else
-        {
-            anim.SetBool("isJumping", false);
         }
     }
 }

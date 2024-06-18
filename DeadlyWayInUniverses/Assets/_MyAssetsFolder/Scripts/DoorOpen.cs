@@ -7,7 +7,6 @@ public class DoorOpen : MonoBehaviour
 
     [SerializeField] private GameObject actionKey;
     [SerializeField] private GameObject actionText;
-    [SerializeField] private GameObject door;
     [SerializeField] private AudioSource doorSound;
     [SerializeField] private Animation anim;
     private float theDistance;
@@ -22,7 +21,7 @@ public class DoorOpen : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        if (theDistance < 2)
+        if (Vector3.Distance(transform.position, Camera.main.transform.position) <= 2 && !isOpen)
         {
             actionKey.SetActive(true);
             actionText.SetActive(true);
@@ -38,10 +37,10 @@ public class DoorOpen : MonoBehaviour
                     else if (!isOpen)
                     {
                         anim.Play("GlassDoor");
-                        isOpen = true; 
+                        isOpen = true;
                     }
                 }
-                else 
+                else
                 {
                     anim.Play();
                 }

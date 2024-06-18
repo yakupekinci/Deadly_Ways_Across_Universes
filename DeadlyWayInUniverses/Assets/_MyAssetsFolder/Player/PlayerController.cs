@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Slider ve Image için gerekli
 using UnityTutorial.Manager;
 
 namespace UnityTutorial.PlayerControl
@@ -18,6 +18,22 @@ namespace UnityTutorial.PlayerControl
         [SerializeField] private float Dis2Ground = 0.8f;
         [SerializeField] private LayerMask GroundCheck;
         [SerializeField] private float AirResistance = 0.8f;
+
+        // Stamina
+        [SerializeField] private float maxStamina = 100f;
+        [SerializeField] private float staminaRegenRate = 5f;
+        [SerializeField] private float runStaminaDrainRate = 10f;
+        private float currentStamina;
+
+        [SerializeField] private Slider staminaSlider; // UI Slider referansı
+
+        // Health
+        [SerializeField] private float maxHealth = 5f;
+        private float currentHealth;
+        [SerializeField] private Slider healthSlider; // UI Slider referansı
+        [SerializeField] private GameObject gameOverPanel; // Game Over Paneli referansı
+        [SerializeField] private Image bloodEffectImage; // Kan efekti Image referansı
+
         private Rigidbody _playerRigidbody;
         private InputManager _inputManager;
         private Animator _animator;
@@ -25,11 +41,9 @@ namespace UnityTutorial.PlayerControl
         private bool _hasAnimator;
         private int _xVelHash;
         private int _yVelHash;
-        private int _jumpHash;
         private int _groundHash;
         private int _fallingHash;
         private int _zVelHash;
-        private int _crouchHash;
         private float _xRotation;
         public bool CanMove;
 
@@ -37,7 +51,8 @@ namespace UnityTutorial.PlayerControl
         private const float _runSpeed = 5f;
         private Vector2 _currentVelocity;
 
-
+        private float lastDamageTime; // Son hasar alma zamanı
+        private bool isRegeneratingHealth = false; // Sağlık yenileme durumu
 
         private void Start()
         {
@@ -46,14 +61,25 @@ namespace UnityTutorial.PlayerControl
             _playerRigidbody = GetComponent<Rigidbody>();
             _inputManager = GetComponent<InputManager>();
 
-
             _xVelHash = Animator.StringToHash("X_Velocity");
             _yVelHash = Animator.StringToHash("Y_Velocity");
             _zVelHash = Animator.StringToHash("Z_Velocity");
-            _jumpHash = Animator.StringToHash("Jump");
             _groundHash = Animator.StringToHash("Grounded");
             _fallingHash = Animator.StringToHash("Falling");
-            _crouchHash = Animator.StringToHash("Crouch");
+
+            currentStamina = maxStamina; // Staminayı başlangıçta maksimum yapıyoruz
+            staminaSlider.maxValue = maxStamina;
+            staminaSlider.value = currentStamina;
+
+            currentHealth = maxHealth; // Sağlığı başlangıçta maksimum yapıyoruz
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+            gameOverPanel.SetActive(false); // Game Over panelini başlangıçta gizliyoruz
+
+            // Kan efekti başlangıçta görünmez yapıyoruz
+            Color bloodColor = bloodEffectImage.color;
+            bloodColor.a = 0f;
+            bloodEffectImage.color = bloodColor;
         }
 
         private void FixedUpdate()
@@ -63,14 +89,22 @@ namespace UnityTutorial.PlayerControl
 
             SampleGround();
             Move();
-            //HandleJump();
-            HandleCrouch();
+
+            RegenerateStamina();
+            UpdateStaminaUI();
+
+            // Sağlık yenileme kontrolü
+            if (Time.time - lastDamageTime >= 5f && !isRegeneratingHealth && currentHealth < maxHealth / 2)
+            {
+                StartCoroutine(RegenerateHealth());
+            }
         }
+
         private void LateUpdate()
         {
-
             if (!CanMove)
                 return;
+
             CamMovements();
         }
 
@@ -78,13 +112,11 @@ namespace UnityTutorial.PlayerControl
         {
             if (!_hasAnimator) return;
 
-            float targetSpeed = _inputManager.Run ? _runSpeed : _walkSpeed;
-            if (_inputManager.Crouch) targetSpeed = 1.5f;
+            float targetSpeed = _inputManager.Run && currentStamina > 0 ? _runSpeed : _walkSpeed;
             if (_inputManager.Move == Vector2.zero) targetSpeed = 0;
 
             if (_grounded)
             {
-
                 _currentVelocity.x = Mathf.Lerp(_currentVelocity.x, _inputManager.Move.x * targetSpeed, AnimBlendSpeed * Time.fixedDeltaTime);
                 _currentVelocity.y = Mathf.Lerp(_currentVelocity.y, _inputManager.Move.y * targetSpeed, AnimBlendSpeed * Time.fixedDeltaTime);
 
@@ -98,9 +130,35 @@ namespace UnityTutorial.PlayerControl
                 _playerRigidbody.AddForce(transform.TransformVector(new Vector3(_currentVelocity.x * AirResistance, 0, _currentVelocity.y * AirResistance)), ForceMode.VelocityChange);
             }
 
-
             _animator.SetFloat(_xVelHash, _currentVelocity.x);
             _animator.SetFloat(_yVelHash, _currentVelocity.y);
+
+            // Stamina'yı koşarken azalt
+            if (_inputManager.Run && _inputManager.Move != Vector2.zero && currentStamina > 0)
+            {
+                currentStamina -= runStaminaDrainRate * Time.fixedDeltaTime;
+                if (currentStamina < 0)
+                {
+                    currentStamina = 0;
+                }
+            }
+        }
+
+        private void RegenerateStamina()
+        {
+            if (!_inputManager.Run && currentStamina < maxStamina)
+            {
+                currentStamina += staminaRegenRate * Time.fixedDeltaTime;
+                if (currentStamina > maxStamina)
+                {
+                    currentStamina = maxStamina;
+                }
+            }
+        }
+
+        private void UpdateStaminaUI()
+        {
+            staminaSlider.value = currentStamina;
         }
 
         private void CamMovements()
@@ -111,36 +169,11 @@ namespace UnityTutorial.PlayerControl
             var Mouse_Y = _inputManager.Look.y;
             Camera.position = CameraRoot.position;
 
-
             _xRotation -= Mouse_Y * MouseSensitivity * Time.smoothDeltaTime;
             _xRotation = Mathf.Clamp(_xRotation, UpperLimit, BottomLimit);
 
             Camera.localRotation = Quaternion.Euler(_xRotation, 0, 0);
             _playerRigidbody.MoveRotation(_playerRigidbody.rotation * Quaternion.Euler(0, Mouse_X * MouseSensitivity * Time.smoothDeltaTime, 0));
-        }
-
-        private void HandleCrouch() => _animator.SetBool(_crouchHash, _inputManager.Crouch);
-
-
-        private void HandleJump()
-        {
-            if (!_hasAnimator) return;
-            if (!_inputManager.Jump) return;
-            if (!_grounded) return;
-            _animator.SetTrigger(_jumpHash);
-
-            //Enable this if you want B-Hop
-            //_playerRigidbody.AddForce(-_playerRigidbody.velocity.y * Vector3.up, ForceMode.VelocityChange);
-            //_playerRigidbody.AddForce(Vector3.up * JumpFactor, ForceMode.Impulse);
-            //_animator.ResetTrigger(_jumpHash);
-        }
-
-        public void JumpAddForce()
-        {
-            //Comment this out if you want B-Hop, otherwise the player will jump twice in the air
-            _playerRigidbody.AddForce(-_playerRigidbody.velocity.y * Vector3.up, ForceMode.VelocityChange);
-            _playerRigidbody.AddForce(Vector3.up * JumpFactor, ForceMode.Impulse);
-            _animator.ResetTrigger(_jumpHash);
         }
 
         private void SampleGround()
@@ -150,12 +183,12 @@ namespace UnityTutorial.PlayerControl
             RaycastHit hitInfo;
             if (Physics.Raycast(_playerRigidbody.worldCenterOfMass, Vector3.down, out hitInfo, Dis2Ground + 0.1f, GroundCheck))
             {
-                //Grounded
+                // Grounded
                 _grounded = true;
                 SetAnimationGrounding();
                 return;
             }
-            //Falling
+            // Falling
             _grounded = false;
             _animator.SetFloat(_zVelHash, _playerRigidbody.velocity.y);
             SetAnimationGrounding();
@@ -167,6 +200,7 @@ namespace UnityTutorial.PlayerControl
             _animator.SetBool(_fallingHash, !_grounded);
             _animator.SetBool(_groundHash, _grounded);
         }
+
         public void PauseAnimations()
         {
             if (_hasAnimator)
@@ -181,6 +215,80 @@ namespace UnityTutorial.PlayerControl
             {
                 _animator.speed = 1f; // Tüm animasyonları devam ettir
             }
+        }
+        [SerializeField] private Image bloodEffect;
+
+        // Zombinin oyuncuya vurduğunda bu fonksiyonu çağırın
+        public void TriggerBloodEffect()
+        {
+            StartCoroutine(ShowBloodEffect());
+        }
+
+        private IEnumerator ShowBloodEffect()
+        {
+            bloodEffect.gameObject.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            bloodEffect.gameObject.SetActive(false);
+        }
+        public void TakeDamage(float damage)
+        {
+            currentHealth -= damage;
+            healthSlider.value = currentHealth;
+            lastDamageTime = Time.time; // Son hasar alma zamanını güncelle
+            isRegeneratingHealth = false; // Sağlık yenilemeyi durdur
+
+            // Kan efekti alfa değerini güncelle
+            UpdateBloodEffectAlpha();
+
+            if (currentHealth <= 0)
+            {
+                GameOver();
+            }
+        }
+
+
+        private void UpdateBloodEffectAlpha()
+        {
+            float healthPercentage = currentHealth / maxHealth;
+            Color bloodColor = bloodEffectImage.color;
+            if (healthPercentage < 0.5f)
+            {
+                bloodColor.a = 1f - (healthPercentage * 2); // Sağlık %50'nin altına düştüğünde kan efekti daha belirgin olur
+            }
+            else
+            {
+                bloodColor.a = 0f; // Sağlık %50'nin üzerindeyse kan efekti görünmez
+            }
+            bloodEffectImage.color = bloodColor;
+        }
+
+        private IEnumerator RegenerateHealth()
+        {
+            isRegeneratingHealth = true;
+            float targetHealth = maxHealth / 2;
+            float regenSpeed = 0.4f; // Sağlık yenileme hızı
+
+            while (currentHealth < targetHealth && isRegeneratingHealth)
+            {
+                currentHealth += regenSpeed * Time.deltaTime;
+                healthSlider.value = currentHealth;
+                UpdateBloodEffectAlpha();
+
+                yield return null;
+            }
+
+            isRegeneratingHealth = false;
+        }
+
+
+        private void GameOver()
+        {
+            CanMove = false;
+            gameOverPanel.SetActive(true);
+            Time.timeScale = 0f; // Zamanı durdur
+            Cursor.lockState = CursorLockMode.None; // Kursörü serbest bırak
+            Cursor.visible = true; // Kursörü görünür yap
+            // Diğer game over işlemleri
         }
     }
 }

@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main/Forest.unity
+    path: Assets/_MyAssetsFolder/Forest.unity
     guid: ef8ae91c2cb52be43a9b34d8a9cc570d
   - enabled: 1
-    path: Assets/Scenes/Main/Cave.unity
+    path: Assets/_MyAssetsFolder/Cave.unity
     guid: 03d8141b43877cf478ceb016d6737158
   - enabled: 1
-    path: Assets/Scenes/Main/Space.unity
+    path: Assets/_MyAssetsFolder/Space.unity
     guid: 256bf2e01584b6842bb3ab4119d42a83
   m_configObjects: {}

@@ -10,6 +10,7 @@ public class Teleport : Loading
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("DÜŞTÜK");
             ActivePanel();
             other.gameObject.SetActive(false);
             LoadScene(SceneNum);

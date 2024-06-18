@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float jumpHeightThreshold = 1.5f;
     [SerializeField] private float idleDuration = 2f; // Bekleme süresi
     [SerializeField] private float randomAreaRadius = 10f; // Rastgele alan yarıçapı
+     // Her saldırıda verilecek hasar
 
     private GameObject player;
     private NavMeshAgent navMeshAgent;
@@ -20,6 +21,7 @@ public class EnemyMovement : MonoBehaviour
     private bool isActive;
     private bool isIdle;
     private float idleTimer;
+    private PlayerController playerController;
 
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class EnemyMovement : MonoBehaviour
         if (this.gameObject.tag == "Z")
             return;
         player = FindObjectOfType<PlayerController>().gameObject;
+        playerController = player.GetComponent<PlayerController>();
     }
 
     private void Start()
@@ -69,6 +72,8 @@ public class EnemyMovement : MonoBehaviour
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isAttacking", true);
                 navMeshAgent.isStopped = true;
+
+              
             }
             else
             {

@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 3348232}
   - component: {fileID: 2331218}
   - component: {fileID: 6592500}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall_Simple_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -869,7 +869,7 @@ GameObject:
   - component: {fileID: 3301324}
   - component: {fileID: 2342306}
   - component: {fileID: 6535652}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
