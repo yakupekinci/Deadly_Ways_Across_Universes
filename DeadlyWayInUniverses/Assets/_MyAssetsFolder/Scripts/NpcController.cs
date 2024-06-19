@@ -1,9 +1,9 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-
 using UnityEngine.UI;
 using UnityTutorial.PlayerControl;
+using UnityEngine.SceneManagement;
 
 public class NpcController : MonoBehaviour
 {
@@ -20,6 +20,7 @@ public class NpcController : MonoBehaviour
     public Camera mainCamera; // Main camera reference
     public Camera doorCamera; // Door camera reference
     CollectParts collectParts;
+    public Loading Loading;
 
     private void Start()
     {
@@ -95,4 +96,35 @@ public class NpcController : MonoBehaviour
         mainCamera.gameObject.SetActive(true);
         playerController.CanMove = true;
     }
+    public void GameOverRestart2()
+    {
+        Scene activeScene = SceneManager.GetActiveScene();
+
+        // Sahnenin index'ini yazdır
+        Debug.Log("Aktif sahnenin index'i: " + activeScene.buildIndex);
+        Loading.LoadScene(activeScene.buildIndex);
+    }
+    public GameObject loadingScreen; // Yükleme ekranı GameObject'i
+
+    public void GameOverRestart()
+    {
+        StartCoroutine(LoadSceneAsyncCoroutine());
+    }
+
+    private IEnumerator LoadSceneAsyncCoroutine()
+    {
+        loadingScreen.SetActive(true); // Yükleme ekranını aktif hale getir
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+
+        // Yükleme tamamlanana kadar bekleyin
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        loadingScreen.SetActive(false); // Yükleme ekranını devre dışı bırak
+    }
+
+
 }

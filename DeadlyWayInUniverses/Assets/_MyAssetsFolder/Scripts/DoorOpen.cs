@@ -21,7 +21,7 @@ public class DoorOpen : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        if (Vector3.Distance(transform.position, Camera.main.transform.position) <= 2 && !isOpen)
+        if (Vector3.Distance(transform.position, Camera.main.transform.position) <= 2.5f && !isOpen)
         {
             actionKey.SetActive(true);
             actionText.SetActive(true);
