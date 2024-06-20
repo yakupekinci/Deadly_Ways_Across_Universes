@@ -13,7 +13,9 @@ public class EnemeyAttack : MonoBehaviour
     }
     public void AttackToPlayer()
     {
+        AudioManager.instance.PlayEffect("Damage");
         playerController.TakeDamage(attackDamage);
-         playerController.TriggerBloodEffect();
+        playerController.TriggerBloodEffect();
+
     }
 }

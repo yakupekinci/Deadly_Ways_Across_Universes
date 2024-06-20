@@ -48,6 +48,19 @@ public class ZombieMovement : MonoBehaviour
         {
             navMeshAgent.SetDestination(player.transform.position);
 
+            int i = Random.Range(0, 2);
+            switch (i)
+            {
+                case 0:
+                    AudioManager.instance.PlayEffect("Z");
+                    break;
+                case 1:
+                    AudioManager.instance.PlayEffect("z3");
+                    break;
+            }
+
+
+
             if (distance > speedDistance)
             {
                 anim.SetBool("isWalking", true);
@@ -57,6 +70,7 @@ public class ZombieMovement : MonoBehaviour
             {
                 anim.SetBool("isWalking", true);
                 navMeshAgent.speed = movementSpeed;
+
             }
 
             if (distance < attackDistance)
@@ -64,6 +78,22 @@ public class ZombieMovement : MonoBehaviour
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isAttacking", true);
                 navMeshAgent.isStopped = true;
+                int b = Random.Range(0, 4);
+                switch (b)
+                {
+                    case 0:
+                        AudioManager.instance.PlayEffect("Za");
+                        break;
+                    case 1:
+                        AudioManager.instance.PlayEffect("Monster1");
+                        break;
+                    case 2:
+                        AudioManager.instance.PlayEffect("Monster2");
+                        break;
+                    case 3:
+                        AudioManager.instance.PlayEffect("Monster3");
+                        break;
+                }
             }
             else
             {
@@ -110,7 +140,7 @@ public class ZombieMovement : MonoBehaviour
 
         if (hit.position != null)
         {
-            navMeshAgent.SetDestination(hit.position);  
+            navMeshAgent.SetDestination(hit.position);
             isIdle = true;
         }
     }

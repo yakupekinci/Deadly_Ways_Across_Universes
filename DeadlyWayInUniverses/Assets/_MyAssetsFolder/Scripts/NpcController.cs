@@ -36,6 +36,7 @@ public class NpcController : MonoBehaviour
         {
             canvas.SetActive(false); // Deactivate the canvas
             playerController.CanMove = true;
+            AudioManager.instance.PlayEffect("Click");
         }
     }
 
@@ -45,6 +46,7 @@ public class NpcController : MonoBehaviour
         {
             if (playerScrollCount < totalScrollsNeeded)
             {
+                AudioManager.instance.PlayEffect("Col");
                 playerController.CanMove = false;
                 int remainingScrolls = totalScrollsNeeded - playerScrollCount;
                 infoText.text = "You need to collect " + remainingScrolls + " more scrolls to open the door!";
@@ -71,6 +73,7 @@ public class NpcController : MonoBehaviour
     // This method can be called when the player collects a scroll
     public void CollectScroll(GameObject panel)
     {
+        AudioManager.instance.PlayEffect("CollectItem");
         playerScrollCount++;
         ParchamentCountTxGUI.text = playerScrollCount.ToString();
         if (playerScrollCount >= totalScrollsNeeded)
@@ -85,12 +88,14 @@ public class NpcController : MonoBehaviour
     }
     private IEnumerator OpenDoorSequenceIE(GameObject panel)
     {
+        AudioManager.instance.PlayEffect("IronDoor");
         playerController.CanMove = false;
         mainCamera.gameObject.SetActive(false);
         doorCamera.gameObject.SetActive(true);
         panel.gameObject.SetActive(false);
         doorAnim.SetBool("isOpen", true); // Open the door animation
         yield return new WaitForSeconds(5f); // Wait for the door animation to complete (adjust time as needed)
+        AudioManager.instance.PlayEffect("OpenCave");
         panel.gameObject.SetActive(true);
         doorCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);

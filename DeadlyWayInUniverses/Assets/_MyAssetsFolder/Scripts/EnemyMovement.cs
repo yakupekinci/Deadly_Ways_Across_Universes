@@ -13,7 +13,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float jumpHeightThreshold = 1.5f;
     [SerializeField] private float idleDuration = 2f; // Bekleme süresi
     [SerializeField] private float randomAreaRadius = 10f; // Rastgele alan yarıçapı
-     // Her saldırıda verilecek hasar
+                                                           // Her saldırıda verilecek hasar
 
     private GameObject player;
     private NavMeshAgent navMeshAgent;
@@ -53,6 +53,16 @@ public class EnemyMovement : MonoBehaviour
         if (distance < followDistance)
         {
             navMeshAgent.SetDestination(player.transform.position);
+            int i = Random.Range(0, 2);
+            switch (i)
+            {
+                case 0:
+                    AudioManager.instance.PlayEffect("Monster1");
+                    break;
+                case 1:
+                    AudioManager.instance.PlayEffect("Monster2");
+                    break;
+            }
 
             if (distance > speedDistance)
             {
@@ -69,11 +79,27 @@ public class EnemyMovement : MonoBehaviour
 
             if (distance < attackDistance)
             {
+                int b = Random.Range(0, 4);
+                switch (b)
+                {
+                    case 0:
+                        AudioManager.instance.PlayEffect("Za");
+                        break;
+                    case 1:
+                        AudioManager.instance.PlayEffect("Monster1");
+                        break;
+                    case 2:
+                        AudioManager.instance.PlayEffect("Monster2");
+                        break;
+                    case 3:
+                        AudioManager.instance.PlayEffect("Monster3");
+                        break;
+                }
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isAttacking", true);
                 navMeshAgent.isStopped = true;
 
-              
+
             }
             else
             {

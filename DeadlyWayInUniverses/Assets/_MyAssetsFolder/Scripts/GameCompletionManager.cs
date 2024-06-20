@@ -6,14 +6,18 @@ using System.Collections; // TextMeshPro kullanımı için
 public class GameCompletionManager : MonoBehaviour
 {
     [SerializeField] private GameObject completionPanel; // Bitiş ekranı paneli
+    [SerializeField] private GameObject MainCam;
+    [SerializeField] private GameObject UICam;
     [SerializeField] private TMP_Text completionText; // Bitiş mesajı metni
     [SerializeField] private float textDisplayInterval = 2.0f; // Her bir metin bloğunun gösterim süresi
-    private string[] storyTexts = 
+    private string[] storyTexts =
     {
         "Congratulations! You Have Successfully Completed the Game!",
         "As you escape the eerie forest, the secrets of the cave remain with you.",
         "Your journey was perilous, but your courage and determination saw you through.",
-        "Thank you for playing!"
+        "Thank you for playing!",
+        "Made by Yakup EKINCI",
+        "Deadly Ways Across Universes..."
     };
 
     private int currentTextIndex = 0;
@@ -26,6 +30,8 @@ public class GameCompletionManager : MonoBehaviour
     // Oyunun tamamlandığı bir metod
     public void CompleteGame()
     {
+        MainCam.SetActive(false);
+        UICam.SetActive(true);
         completionPanel.SetActive(true); // Bitiş ekranını göster
         Time.timeScale = 0f; // Oyun zamanını durdur
         StartCoroutine(DisplayStory());
@@ -45,6 +51,17 @@ public class GameCompletionManager : MonoBehaviour
             completionText.text = storyTexts[currentTextIndex];
             currentTextIndex++;
             yield return new WaitForSecondsRealtime(textDisplayInterval); // Oyun zamanını durdurduğumuz için Realtime kullanıyoruz
+        }
+        ReturnToMainMenu();
+
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            CompleteGame();
         }
     }
 }

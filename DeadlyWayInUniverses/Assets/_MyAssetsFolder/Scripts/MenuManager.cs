@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameObject settingsPanel;
-
+    [SerializeField] private GameObject DemoPanel;
+    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject LoadingScrren;
     [SerializeField] private Slider loaddingBarFill;
     [SerializeField] private GameObject uICamera;
@@ -18,39 +18,70 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
         settingsPanel.SetActive(false);
+        DemoPanel.SetActive(false);
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None; // Kursörü serbest bırak
+        Cursor.visible = true; // Kursörü görünür yap
+        AudioManager.instance.PlayMusic("MenuMusic");
     }
     public void StartGame()
     {
-        // Burada başlangıç sahnesinin adını veya indeksini belirtmelisin
-        SceneManager.LoadScene(0);
+
+        AudioManager.instance.PlayEffect("ButtonHit");
+        SceneManager.LoadScene(1);
     }
 
     public void QuitGame()
     {
-        // Oyun durdurulur ve uygulamadan çıkılır
+
+        AudioManager.instance.PlayEffect("Click");
         Application.Quit();
-        Debug.Log("Game is exiting"); // Editörde çalışırken çıkış olmadığını belirten mesaj
+        Debug.Log("Game is exiting");
     }
 
     public void OpenSettings()
     {
-        // Ayarlar panelini açmak için gereken kod buraya eklenir
-        // Örneğin, bir ayarlar panelini etkin hale getirebilirsin.
+
+        AudioManager.instance.PlayEffect("Click");
         settingsPanel.SetActive(true);
-        Debug.Log("Settings opened"); // Şu anda sadece bir debug mesajı gösteriyoruz
+        DemoPanel.SetActive(false);
+    }
+
+
+    public void OpenDemo()
+    {
+        AudioManager.instance.PlayEffect("Click");
+        DemoPanel.SetActive(true);
+        settingsPanel.SetActive(false);
+
+    }
+    public void Click()
+    {
+        AudioManager.instance.PlayEffect("Click");
     }
     public void LoadScene(int sceneId)
     {
         Time.timeScale = 1f;
         ActivePanel();
-        if (sceneId == 0)
-            sceneName.text = "Loading...'You have left the safety of the menu and entered the dense forest. Your journey is just beginning. Ahead lies a path fraught with danger and intrigue. Gather your courage, for the real adventure starts now. Beware of the lurking shadows and keep your wits about you.";
-        if (sceneId == 1)
-            sceneName.text = "Loading...'You have successfully navigated through the dense forest, but your journey is far from over. Ahead lies the mysterious Cave of Dark Secrets, where many have entered but few have returned. Gather your courage, for the true challenge begins now. Beware of the lurking shadows and keep your wits about you.";
-        if (sceneId == 2)
-            sceneName.text = "Loading...You have successfully navigated through the treacherous cave, but your journey is far from over. Ahead lies the mysterious Lost Space Station, where many have entered but few have returned. Gather your courage, for the true challenge begins now. Beware of the lurking shadows and keep your wits about you.";
-        StartCoroutine(LoadSceneAsync(sceneId));
+        switch (sceneId)
+        {
+            case 1:
+                AudioManager.instance.PlayMusic("Forest");
+                sceneName.text = "'You have left the safety of the menu and entered the dense forest. Your journey is just beginning. Ahead lies a path fraught with danger and intrigue. Gather your courage, for the real adventure starts now. Beware of the lurking shadows and keep your wits about you.";
 
+                break;
+            case 2:
+                AudioManager.instance.PlayMusic("Cave");
+                sceneName.text = "'You have successfully navigated through the dense forest, but your journey is far from over. Ahead lies the mysterious Cave of Dark Secrets, where many have entered but few have returned. Gather your courage, for the true challenge begins now. Beware of the lurking shadows and keep your wits about you.";
+
+                break;
+            case 3: 
+                AudioManager.instance.PlayMusic("Space");
+                sceneName.text = "You have successfully navigated through the treacherous cave, but your journey is far from over. Ahead lies the mysterious Lost Space Station, where many have entered but few have returned. Gather your courage, for the true challenge begins now. Beware of the lurking shadows and keep your wits about you.";
+
+                break;
+        }
+        StartCoroutine(LoadSceneAsync(sceneId));
     }
     public void ActivePanel()
     {
@@ -64,6 +95,7 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator LoadSceneAsync(int sceneId)
     {
+        AudioManager.instance.PlayEffect("ButtonHit");
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId);
 
         while (!operation.isDone)
@@ -75,4 +107,21 @@ public class MenuManager : MonoBehaviour
         }
 
     }
+    public void ForestMap()
+    {
+        AudioManager.instance.PlayEffect("ButtonHit");
+        SceneManager.LoadScene(1);
+    }
+    public void CaveMap()
+    {
+        AudioManager.instance.PlayEffect("ButtonHit");
+        SceneManager.LoadScene(2);
+    }
+    public void SpaceMap()
+    {
+        AudioManager.instance.PlayEffect("ButtonHit");
+        SceneManager.LoadScene(3);
+    }
+
+
 }

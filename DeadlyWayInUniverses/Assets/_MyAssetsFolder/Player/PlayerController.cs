@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI; // Slider ve Image için gerekli
 using UnityTutorial.Manager;
 
@@ -52,7 +53,9 @@ namespace UnityTutorial.PlayerControl
 
         private float lastDamageTime; // Son hasar alma zamanı
         private bool isRegeneratingHealth = false; // Sağlık yenileme durumu
-
+        [SerializeField]
+        private float stepInterval = 0.5f;
+        private float lastStepTime;
         private void Start()
         {
             CanMove = true;
@@ -116,6 +119,16 @@ namespace UnityTutorial.PlayerControl
 
             if (_grounded)
             {
+                if (Time.time - lastStepTime > stepInterval && _inputManager.Run && _inputManager.Move != Vector2.zero)
+                {
+                    AudioManager.instance.PlayEffect("Run");
+                    lastStepTime = Time.time;
+                }
+                if (Time.time - lastStepTime > stepInterval && _inputManager.Move != Vector2.zero)
+                {
+                    PlayStepSound();
+                    lastStepTime = Time.time;
+                }
                 _currentVelocity.x = Mathf.Lerp(_currentVelocity.x, _inputManager.Move.x * targetSpeed, AnimBlendSpeed * Time.fixedDeltaTime);
                 _currentVelocity.y = Mathf.Lerp(_currentVelocity.y, _inputManager.Move.y * targetSpeed, AnimBlendSpeed * Time.fixedDeltaTime);
 
@@ -142,7 +155,26 @@ namespace UnityTutorial.PlayerControl
                 }
             }
         }
+        private void PlayStepSound()
+        {
+            UnityEngine.SceneManagement.Scene activeScene = SceneManager.GetActiveScene();
+            switch (activeScene.buildIndex)
+            {
+                case 1:
+                    AudioManager.instance.PlayEffect("Step1");
 
+                    break;
+                case 2:
+                    AudioManager.instance.PlayEffect("Step2");
+                    break;
+                case 3:
+                    AudioManager.instance.PlayEffect("Step4");
+                    break;
+                default:
+                    Debug.LogWarning("Unknown scene index: " + activeScene.buildIndex);
+                    break;
+            }
+        }
         private void RegenerateStamina()
         {
             if (!_inputManager.Run && currentStamina < maxStamina)
@@ -185,6 +217,7 @@ namespace UnityTutorial.PlayerControl
                 // Grounded
                 _grounded = true;
                 SetAnimationGrounding();
+
                 return;
             }
             // Falling
@@ -231,6 +264,7 @@ namespace UnityTutorial.PlayerControl
         }
         public void TakeDamage(float damage)
         {
+            AudioManager.instance.PlayEffect("Damage");
             currentHealth -= damage;
             healthSlider.value = currentHealth;
             lastDamageTime = Time.time; // Son hasar alma zamanını güncelle
@@ -289,5 +323,6 @@ namespace UnityTutorial.PlayerControl
             Cursor.visible = true; // Kursörü görünür yap
             // Diğer game over işlemleri
         }
+
     }
 }

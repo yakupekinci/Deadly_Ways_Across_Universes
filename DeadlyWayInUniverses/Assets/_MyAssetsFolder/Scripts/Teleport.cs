@@ -11,6 +11,7 @@ public class Teleport : Loading
         if (other.CompareTag("Player"))
         {
             Debug.Log("DÜŞTÜK");
+            AudioManager.instance.PlayEffect("Col");
             ActivePanel();
             other.gameObject.SetActive(false);
             LoadScene(SceneNum);
